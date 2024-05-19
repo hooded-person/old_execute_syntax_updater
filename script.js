@@ -6,20 +6,19 @@ const commandOutput = document.getElementById("commandOutput");
 
 const button = document.getElementById("updateButton");
 button.addEventListener("click", () => {
-    commandOutput.value = updateCommand(commandInput.value, 0);
+    commandOutput.value = ""
+    commandOutput.value = parseInput(commandInput.value);
 });
 
 function updateCommand(command) {
     console.log("UPDATING...")
     console.log(command);
-    console.log(regex)
     let results = [...command.matchAll(regex)][0];
-    console.log(results);
-    let target = results[1]
-    let position = results[2]
-    let chainCommand = results[3]
+    let target = results[1];
+    let position = results[2];
+    let chainCommand = results[3];
     let newCommand = "execute as " + target + " at @s";
-    if (position != "~ ~ ~") {
+    if (!(/(?:~0? ?){3}/gm.test(position))) {
         newCommand = newCommand + " positioned " + position;
     };
     if (chainCommand.startsWith("execute")) {
@@ -28,7 +27,17 @@ function updateCommand(command) {
     } else {
         newCommand = newCommand + " run " + chainCommand;
     };
+    newCommand = newCommand.replace("as @s", "")
+    newCommand = newCommand.replace("at @s at @s", "at @s")
+    newCommand = newCommand.replace("  ", " ")
     console.log(newCommand);
-    console.log("UPDATED")
-    return newCommand
+    console.log("UPDATED");
+    return newCommand;
+};
+
+function parseInput(input) {
+    let commands = input.split("\n")
+    commands = commands.map(updateCommand)
+    console.log(commands)
+    return commands.join("\n")
 };
