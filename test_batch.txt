@@ -19,3 +19,11 @@ execute @e[type=player,name=!"King Green"] ~ ~ ~ execute @e[type=creeper, r=5] ~
 execute @e[type=creeper] ~ ~ ~ detect ~ ~-1 ~ grass 0 execute @p[r=10] ~ ~ ~ give @s diamond_sword
 execute @e[type=chicken] ~ ~ ~ detect ~ ~-1 ~ hay_block 0 tp @s ~~5~
 execute @r[score={timer=10..}, tag=redTeam] ~~~ detect ~~1~ air 0 execute @e[type=wolf, c=1]  ~~~ tag @s add jump
+execute @e[type=villager,name=villager] ~~~ summon tnt
+execute @a[c=1,hasitem={item=dirt}] ~~~ execute @s ~~~ clear @s dirt
+execute @p[tag=!admin] ~~~ summon lightning_bolt
+execute @r[rype=armor_stand,name=random] ~~~ setblock ~~-1~ redstone_block
+execute @e[type=item] ~ ~ ~ detect ~ ~-1 ~ grass 0 kill @s
+execute @a ~~~ tp @e[rm=0.1,r=10] ~~~
+execute @initiator[scores={money=1000...}] ~~~ titleraw @s actionbar {"rawtext":[{"text":"I guess something is supposed to happen now but I forgot to implement the rest"}]}
+execute @a[lm=30] ~~~ execute @e[r=30,rm=0.1] ~~~ summon ender_crystal ~~~ ~~ minecraft:crystal_explode
