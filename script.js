@@ -1,5 +1,9 @@
 console.log("script loaded");
-const regex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (\d))? (.*)/gm;
+const commandkeywordRegex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (\d))? (.*)/gm;
+const commandInput = document.getElementById("commandInput");
+const commandOutput = document.getElementById("commandOutput");
+const updateButton = document.getElementById("updateButton");
+var inputTextValue = commandInput.value;
 randPlaceholder = [
     "execute @a[x=3] ~ ~ ~ say hi",
     "execute @e[dy=4] 31 1 5 tell @a hi",
@@ -19,31 +23,18 @@ randPlaceholder = [
     "execute @e[type=arrow] ~ ~ ~ execute @e[type=player, r=5] ~ ~ ~ effect @s poison 5 1 true",
     "execute @e[type=creeper] ~ ~1 ~ detect ~ ~-1 ~ stone 0 summon lightning_bolt"
 ];
-commandInput.placeholder = randPlaceholder[Math.floor(Math.random() * randPlaceholder.length)];
-const commandInput = document.getElementById("commandInput");
-const commandOutput = document.getElementById("commandOutput");
-commandInput.addEventListener("change", ()=>{
-    let count = (commandInput.value.match(/\n/g) || []).length + 1
-    if (count > 10 ) {
-        commandInput.rows = count
-        commandOutput.rows = count
-    } else {
-        commandInput.rows = 10
-        commandOutput.rows = 10
-    };
-    console.log(count); 
+updateButton.addEventListener("click", () => {
+    commandOutput.value = "";
+    commandOutput.innerText = parseInput(commandInput.value);
 });
 
-const button = document.getElementById("updateButton");
-button.addEventListener("click", () => {
-    commandOutput.value = ""
-    commandOutput.value = parseInput(commandInput.value);
-});
+commandInput.placeholder = randPlaceholder[Math.floor(Math.random() * randPlaceholder.length)];
+
 
 function updateCommand(command) {
     console.log("UPDATING...");
     console.log(command);
-    let results = [...command.matchAll(regex)][0];
+    let results = [...command.matchAll(commandkeywordRegex)][0];
     let target = results[1];
     let position = results[2];
     let detectPos = results[3];
@@ -77,3 +68,8 @@ function parseInput(input) {
     console.log(commands)
     return commands.join("\n")
 };
+
+function copyCommand() {
+  var copyText = commandOutput.innerText;
+  navigator.clipboard.writeText(copyText);
+}
