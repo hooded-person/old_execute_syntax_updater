@@ -1,6 +1,25 @@
 console.log("script loaded");
 const regex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (\d))? (.*)/gm;
-
+randPlaceholder = [
+    "execute @a[x=3] ~ ~ ~ say hi",
+    "execute @e[dy=4] 31 1 5 tell @a hi",
+    "execute Steve ~5 ~30 5 execute @e[r=5] ~~~ kill @s",
+    "execute @e[r=5] ~~~ kill @s",
+    "execute @a ~ ~ ~ detect ~ ~-1 ~ stone 0 say player standing on stone",
+    "execute @e[type=creeper] ~ ~ ~ summon lightning_bolt",
+    "execute @e[type=skeleton] ~ ~ ~ effect @e[type=skeleton] speed 1 1 true",
+    "execute @a ~ ~ ~ setblock ~ ~-1 ~ minecraft:diamond_block",
+    "execute @a[x=100,y=64,z=100,r=5] ~ ~ ~ give @p minecraft:diamond_sword",
+    "execute @e[type=zombie] ~ ~ ~ tp @s @p[r=8]",
+    "execute @a[type=player,name=!\"Alex\"] ~ ~ ~ kill @e[type=cow,r=5]",
+    "execute @a[scores={money=10..}] ~ ~ ~ say You have 10 or more money",
+    "execute @e[type=pig] ~ ~ ~ detect ~ ~-1 ~ grass 0 kill @s",
+    "execute @e[type=wolf] ~ ~ ~ tp @p @s",
+    "execute @a[hasitem={item=diamond}] ~ ~ ~ effect @s strength 10 1 true",
+    "execute @e[type=arrow] ~ ~ ~ execute @e[type=player, r=5] ~ ~ ~ effect @s poison 5 1 true",
+    "execute @e[type=creeper] ~ ~1 ~ detect ~ ~-1 ~ stone 0 summon lightning_bolt"
+];
+commandInput.placeholder = randPlaceholder[Math.floor(Math.random() * randPlaceholder.length)];
 const commandInput = document.getElementById("commandInput");
 const commandOutput = document.getElementById("commandOutput");
 commandInput.addEventListener("change", ()=>{
