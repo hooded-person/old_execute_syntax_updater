@@ -1,4 +1,4 @@
-console.log("script loaded");
+console.log("Script loaded");
 const commandkeywordRegex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (\d))? (.*)/gm;
 const commandInput = document.getElementById("commandInput");
 const commandOutput = document.getElementById("commandOutput");
@@ -23,50 +23,51 @@ randPlaceholder = [
     "execute @e[type=arrow] ~ ~ ~ execute @e[type=player, r=5] ~ ~ ~ effect @s poison 5 1 true",
     "execute @e[type=creeper] ~ ~1 ~ detect ~ ~-1 ~ stone 0 summon lightning_bolt"
 ];
-updateButton.addEventListener("click", () => {
-    commandOutput.value = "";
-    commandOutput.innerText = parseInput(commandInput.value);
-});
 
 commandInput.placeholder = randPlaceholder[Math.floor(Math.random() * randPlaceholder.length)];
 
+updateButton.addEventListener("click", () => {
+  commandOutput.textContent = "";
+  commandOutput.textContent = parseInput(commandInput.value);
+});
 
 function updateCommand(command) {
-    console.log("UPDATING...");
-    console.log(command);
-    let results = [...command.matchAll(commandkeywordRegex)][0];
-    let target = results[1];
-    let position = results[2];
-    let detectPos = results[3];
-    let detectBlock = results[4];
-    let detectState = results[5];
-    let chainCommand = results[6];
-    let newCommand = "execute as " + target + " at @s";
-    if (!(/(?:~0? ?){3}/gm.test(position))) {
-        newCommand = newCommand + " positioned " + position;
-    };
-    if (detectPos) {
-        newCommand = newCommand + ` if block ${detectPos} ${detectBlock} ${detectState}`
-    };
-    if (chainCommand.startsWith("execute")) {
-        chainCommand = updateCommand(chainCommand);
-        newCommand = newCommand + chainCommand.substring("execute".length);
-    } else {
-        newCommand = newCommand + " run " + chainCommand;
-    };
-    newCommand = newCommand.replace("as @s", "");
-    newCommand = newCommand.replace("at @s at @s", "at @s");
-    newCommand = newCommand.replace("  ", " ");
-    console.log(newCommand);
-    console.log("UPDATED");
-    return newCommand;
+  console.log("UPDATING...");
+  console.log(command);
+  let results = [...command.matchAll(commandkeywordRegex)][0];
+  let target = results[1];
+  let position = results[2];
+  let detectPos = results[3];
+  let detectBlock = results[4];
+  let detectState = results[5];
+  let chainCommand = results[6];
+  let newCommand = "execute as " + target + " at @s";
+  if (!(/(?:~0? ?){3}/gm.test(position))) {
+    newCommand = newCommand + " positioned " + position;
+  };
+  if (detectPos) {
+    newCommand = newCommand + ` if block ${detectPos} ${detectBlock} ${detectState}`
+  };
+  if (chainCommand.startsWith("execute")) {
+    // Recursive call to handle chained commands
+    chainCommand = updateCommand(chainCommand);
+  }
+  // Ensure the "run" keyword is not added here
+  newCommand = newCommand + " " + chainCommand;
+  // Remove duplicates and extra spaces
+  newCommand = newCommand.replace("as @s", "")
+  newCommand = newCommand.replace("at @s at @s", "at @s")
+  newCommand = newCommand.replace("  ", " ")
+  console.log(newCommand);
+  console.log("UPDATED");
+  return newCommand;
 };
 
 function parseInput(input) {
-    let commands = input.split("\n")
-    commands = commands.map(updateCommand)
-    console.log(commands)
-    return commands.join("\n")
+  let commands = input.split("\n")
+  commands = commands.map(updateCommand)
+  console.log(commands)
+  return commands.join("\n")
 };
 
 function copyCommand() {
