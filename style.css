@@ -76,10 +76,12 @@ button {
   margin: 0 0 25px 0;
   font-family: inherit;
   vertical-align: middle;
-  padding: 5px auto;
-  width: auto;
-  max-width: 25%;
-  min-height: 25px;
+  padding: 10px auto;
+  width: 15vw;
+  min-width: 100px;
+  max-width: 35%;
+  min-height: 35px;
+  height: 45px;
   color: #fff;
   border: 3px solid #CCC;
   background-color: transparent;
