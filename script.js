@@ -1,5 +1,5 @@
 console.log("Script loaded");
-const commandkeywordRegex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (\d))? (.*)/gm;
+const commandkeywordRegex = /^execute (.*?) ((?:[~^]-?\d* ?|-?\d+ ?){3})(?: detect ((?:[~^]-?\d* ?|-?\d+ ?){3}) (\D*) (-?\d))? (.*)/gm;
 const commandInput = document.getElementById("commandInput");
 const commandOutput = document.getElementById("commandOutput");
 const updateButton = document.getElementById("updateButton");
@@ -46,7 +46,9 @@ function updateCommand(command) {
     newCommand = newCommand + " positioned " + position;
   };
   if (detectPos) {
+    if detectState == "0" {detectState = "[]";console.log("metadata was 0, converted to []");}
     newCommand = newCommand + ` if block ${detectPos} ${detectBlock} ${detectState}`
+    console.warn("metadata is deprecated, conversion to blockstate required")
   };
   if (chainCommand.startsWith("execute")) {
     // Recursive call to handle chained commands
